@@ -1,0 +1,170 @@
+/* Body */
+
+body {
+    background-color: #211154;
+    font-family: 'Fuzzy Bubbles', cursive;
+}
+
+
+/* Inicio */
+
+#Inicio .row {
+    height: 100vh;
+    align-content: center !important;
+    justify-content: center !important;
+}
+
+#Inicio svg {
+    fill: #FFFFFF;
+    width: 6vw;
+    margin-inline: 1%;
+}
+
+
+/* Título */
+
+#Titulo {
+    display: none;
+    padding-block-start: 1vh;
+}
+
+
+/* Cantidad */
+
+#Cantidad {
+    display: none;
+}
+
+#Cantidad img {
+    width: auto;
+}
+
+#Cantidad .card {
+    font-size: large;
+}
+
+#Cantidad .row {
+    justify-content: center;
+    align-items: center;
+}
+
+#Cantidad #Card {
+    height: 78vh;
+}
+
+#Cantidad .btn {
+    background-color: #211154;
+}
+
+#Cantidad .btn:hover {
+    background-color: #573692 !important;
+}
+
+/* Jugada */
+
+#Jugada {
+    display: none;
+}
+
+#Jugada svg {
+    fill: #FFFFFF;
+    width: 15vw;
+}
+
+#Jugada img {
+    width: 10vw;
+}
+
+/* Para esconder icono radio y reemplazar por svg */
+[type=radio] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Estilo svg */
+[type=radio]+svg {
+    cursor: pointer;
+}
+
+/* Estilo checked */
+[type=radio]:checked+svg {
+    outline: 2px solid #FFFFFF;
+}
+
+
+/* Rseultado parcial */
+
+#ResultParcial {
+    display: none;
+}
+
+#ResultParcial .row {
+    height: 75vh;
+}
+
+#ResultParcial img {
+    width: 10vw;
+}
+
+#ResultParcial svg {
+    fill: #FFFFFF;
+    width: 13vw;
+}
+
+#ResultParcial h1 {
+    font-size: xxx-large !important;
+}
+
+
+/* Resultado final */
+
+#ResultFinal {
+    display: none;
+}
+
+#ResultFinal img {
+    width: 10vw;
+}
+
+#ResultFinal #Row {
+    margin-block-start: 6vh;
+}
+
+
+/* Media Queries */
+
+@media (max-width: 767px) {
+
+    /* Inicio */
+    #Inicio svg {
+        width: 15vw;
+    }
+
+    /* Jugada */
+    #Jugada svg {
+        width: 35vw;
+    }
+
+    #ResultParcial img {
+        width: 25vw;
+    }
+
+    #ResultParcial svg {
+        width: 35vw;
+    }
+}
+
+@media (min-width: 768px) {
+
+    /* Cantidad */
+    #Cantidad .form-control {
+        width: initial !important;
+    }
+
+    /* Resultado parcial */
+    #ResultParcial .card {
+        flex-direction: initial !important;
+    }
+}
