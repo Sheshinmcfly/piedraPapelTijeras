@@ -20,6 +20,10 @@ body {
     margin-inline: 1%;
 }
 
+#Inicio .btn {
+    background-color: #573692;
+}
+
 
 /* Título */
 
@@ -93,6 +97,10 @@ body {
     outline: 2px solid #FFFFFF;
 }
 
+#Jugada #PPT {
+    background-color: #573692 !important;
+}
+
 
 /* Rseultado parcial */
 
@@ -132,6 +140,9 @@ body {
     margin-block-start: 6vh;
 }
 
+#ResultFinal .btn {
+    background-color: #573692 !important;
+}
 
 /* Media Queries */
 

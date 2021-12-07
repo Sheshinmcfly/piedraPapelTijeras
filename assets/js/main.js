@@ -36,8 +36,13 @@ $(document).ready(function () {
     $("#Inicio button").click(function () {
 
         /* Se guarda en variable la etiqueta audio y se le agrega el atributo src con el origen del audio */
-        var audioEtiqueta = document.querySelector("audio");
+        var audioEtiqueta = document.getElementById("Audio");
         audioEtiqueta.setAttribute("src", "assets/audio/audio.mp3");
+
+        /* Se ajusta volumen */
+        var volumen = document.getElementById("Audio");
+        volumen.volume = 0.05;
+
 
         $("#Inicio").toggle('slow');
         $("#Titulo").css("display", "block");
