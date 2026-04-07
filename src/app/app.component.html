@@ -1,0 +1,183 @@
+<!-- Toggle de tema (siempre visible) -->
+<button class="btn-tema" (click)="toggleTema()">
+  {{ tema() === 'moderno' ? '👾 Retro' : '✨ Moderno' }}
+</button>
+
+<!-- Wrapper tema -->
+<div [class.retro]="tema() === 'retro'" [class.retro-scanlines]="tema() === 'retro'">
+
+<!-- INICIO -->
+<section @pantalla *ngIf="pantalla() === 'inicio'" class="pantalla text-white text-center">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 mb-3">
+        <h1 class="display-3 fw-bold titulo-gradiente">Piedra, papel o tijeras!</h1>
+        <div class="divider mx-auto mt-2"></div>
+      </div>
+      <div class="col-12 mb-5 d-flex justify-content-center gap-4 flex-wrap">
+        <img src="assets/img/piedra.svg"  alt="Piedra"  class="icono-inicio">
+        <img src="assets/img/papel.svg"   alt="Papel"   class="icono-inicio">
+        <img src="assets/img/tijeras.svg" alt="Tijeras" class="icono-inicio">
+      </div>
+      <div class="col-12">
+        <button class="btn-glow" (click)="entrar()">
+          <span *ngIf="tema() === 'moderno'">Entrar al juego</span>
+          <span *ngIf="tema() === 'retro'">INSERT COIN</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CANTIDAD -->
+<section @pantalla *ngIf="pantalla() === 'cantidad'" class="pantalla">
+  <div class="container">
+    <h1 class="fw-bold text-center titulo-gradiente mb-4">Piedra, papel o tijeras!</h1>
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-7 col-lg-5">
+        <div class="glass-card">
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <img src="assets/img/robot.png" alt="Robot" style="width:70px;flex-shrink:0">
+            <div class="text-white">
+              <h5 class="fw-bold mb-2">Hola humano!</h5>
+              <p class="mb-0" style="opacity:0.8; font-size:0.85rem; line-height:1.8">
+                Soy "La maquina", rey del piedra, papel o tijeras.<br>
+                Nadie me puede ganar... Te gustaria intentarlo?<br>
+                Ingresa el numero de partidas que deseas perder.
+              </p>
+            </div>
+          </div>
+          <div class="d-flex gap-2">
+            <input
+              [(ngModel)]="cantidadInput"
+              class="input-dark flex-grow-1"
+              type="number" min="1" max="100"
+              placeholder="Numero de partidas"
+              (keyup.enter)="iniciarJuego()">
+            <button class="btn-glow" (click)="iniciarJuego()">
+              <span *ngIf="tema() === 'moderno'">Jugar</span>
+              <span *ngIf="tema() === 'retro'">START</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JUGADA -->
+<section @pantalla *ngIf="pantalla() === 'jugada'" class="pantalla-jugada text-white text-center">
+  <div class="container-fluid px-3 d-flex flex-column jugada-inner">
+
+    <div class="pt-3 pb-1">
+      <h2 class="fw-bold titulo-gradiente mb-0 titulo-jugada">Piedra, papel o tijeras!</h2>
+      <p class="mb-0" style="opacity:0.45; letter-spacing:2px; font-size:0.6rem">
+        RONDA {{ rondaActual() }} DE {{ cantidadTotal() }}
+      </p>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center gap-4 py-2">
+      <div class="text-center">
+        <div class="badge-jugador mb-1">Maquina</div>
+        <img src="assets/img/robot.png" alt="Robot" class="img-personaje-sm d-block mx-auto mb-1">
+        <div class="score-num-sm">{{ puntosRobot() }}</div>
+      </div>
+      <div class="vs-text-sm">VS</div>
+      <div class="text-center">
+        <div class="badge-jugador mb-1">Tu</div>
+        <img src="assets/img/jugador.png" alt="Jugador" class="img-personaje-sm d-block mx-auto mb-1">
+        <div class="score-num-sm">{{ puntosJugador() }}</div>
+      </div>
+    </div>
+
+    <div class="flex-grow-1 d-flex align-items-center py-2">
+      <div class="row row-cols-3 g-2 w-100 mx-0">
+        <div class="col" *ngFor="let op of opciones">
+          <div
+            class="opcion-card h-100"
+            [class.seleccionada]="opcionSeleccionada() === op.valor"
+            (click)="seleccionar(op.valor)">
+            <img [src]="op.img" [alt]="op.label" class="icono-opcion d-block mx-auto mb-1">
+            <div class="fw-bold" style="font-size:0.7rem">{{ op.label }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pb-4">
+      <button class="btn-glow w-100" [disabled]="opcionSeleccionada() === null" (click)="jugar()">
+        <span *ngIf="tema() === 'moderno'">Piedra, papel o tijeras!</span>
+        <span *ngIf="tema() === 'retro'">PLAY!</span>
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- RESULT PARCIAL -->
+<section @pantalla *ngIf="pantalla() === 'resultParcial'" class="pantalla text-white text-center">
+  <div class="container">
+
+    <div class="mensaje-ronda fw-bold mb-1">{{ mensajeRonda() }}</div>
+    <div class="divider mx-auto mb-4"></div>
+
+    <!-- Fila horizontal: robot | vs | jugador -->
+    <div class="d-flex justify-content-center align-items-center gap-2">
+
+      <!-- Robot -->
+      <div class="resultado-col text-center flex-fill">
+        <div class="badge-jugador mb-2">Maquina</div>
+        <img src="assets/img/robot.png" alt="Robot" class="img-personaje-sm d-block mx-auto mb-3">
+        <div *ngIf="opcionRobot() !== null" class="glass-card px-2 py-3">
+          <img [src]="opciones[opcionRobot()!].img" [alt]="opciones[opcionRobot()!].label" class="icono-resultado-sm d-block mx-auto">
+          <div class="fw-bold mt-2" style="font-size:0.65rem">{{ opciones[opcionRobot()!].label }}</div>
+        </div>
+      </div>
+
+      <!-- VS central -->
+      <div class="vs-text px-2">VS</div>
+
+      <!-- Jugador -->
+      <div class="resultado-col text-center flex-fill">
+        <div class="badge-jugador mb-2">Tu</div>
+        <img src="assets/img/jugador.png" alt="Jugador" class="img-personaje-sm d-block mx-auto mb-3">
+        <div *ngIf="opcionSeleccionada() !== null" class="glass-card px-2 py-3">
+          <img [src]="opciones[opcionSeleccionada()!].img" [alt]="opciones[opcionSeleccionada()!].label" class="icono-resultado-sm d-block mx-auto">
+          <div class="fw-bold mt-2" style="font-size:0.65rem">{{ opciones[opcionSeleccionada()!].label }}</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- RESULT FINAL -->
+<section @pantalla *ngIf="pantalla() === 'resultFinal'" class="pantalla text-white text-center">
+  <div class="container">
+    <h1 class="fw-bold titulo-gradiente mb-2">Resultados finales</h1>
+    <div class="divider mx-auto mb-4"></div>
+    <div class="row justify-content-center align-items-center mb-4 g-3">
+      <div class="col-auto text-center">
+        <div class="badge-jugador mb-2">Maquina</div>
+        <img src="assets/img/robot.png" alt="Robot" class="img-personaje d-block mx-auto mb-2">
+        <div class="score-box mx-auto"><div class="score-num">{{ puntosRobot() }}</div></div>
+      </div>
+      <div class="col-auto"><div class="vs-text">VS</div></div>
+      <div class="col-auto text-center">
+        <div class="badge-jugador mb-2">Tu</div>
+        <img src="assets/img/jugador.png" alt="Jugador" class="img-personaje d-block mx-auto mb-2">
+        <div class="score-box mx-auto"><div class="score-num">{{ puntosJugador() }}</div></div>
+      </div>
+    </div>
+    <div class="glass-card d-inline-block px-4 py-3 mb-4">
+      <h3 class="fw-bold mb-0" style="font-size:clamp(0.7rem,2vw,1.1rem)" [innerHTML]="mensajeFinal()"></h3>
+    </div>
+    <br>
+    <button class="btn-glow mt-2" (click)="jugarDeNuevo()">
+      <span *ngIf="tema() === 'moderno'">Jugar de nuevo!</span>
+      <span *ngIf="tema() === 'retro'">PLAY AGAIN</span>
+    </button>
+  </div>
+</section>
+
+</div>

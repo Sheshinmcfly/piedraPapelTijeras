@@ -1,0 +1,465 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   HOST & LAYOUT
+══════════════════════════════════════════════════════════════════════════ */
+:host {
+  --accent:       #7c3aed;
+  --accent-2:     #06b6d4;
+  --glow-purple:  rgba(124,58,237,0.6);
+  --glow-cyan:    rgba(6,182,212,0.5);
+  --glass-bg:     rgba(255,255,255,0.05);
+  --glass-border: rgba(255,255,255,0.1);
+
+  display: block;
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+.pantalla {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 2.5rem 0;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TEMA MODERNO
+══════════════════════════════════════════════════════════════════════════ */
+
+/* Título gradiente */
+.titulo-gradiente {
+  background: linear-gradient(135deg, #fff 0%, var(--accent-2) 50%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass card */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 2rem;
+}
+
+/* Botón glow */
+.btn-glow {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border: none;
+  color: white;
+  padding: 0.75rem 2.5rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-family: 'Fuzzy Bubbles', cursive;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 20px var(--glow-purple);
+  cursor: pointer;
+}
+.btn-glow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--glow-purple), 0 4px 15px var(--glow-cyan);
+  color: white;
+}
+.btn-glow:active  { transform: translateY(0); }
+.btn-glow:disabled { opacity: 0.4; transform: none; box-shadow: none; }
+
+/* Input dark */
+.input-dark {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  color: white;
+  font-family: 'Fuzzy Bubbles', cursive;
+  font-size: 1rem;
+  padding: 0.65rem 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input-dark::placeholder { color: rgba(255,255,255,0.35); }
+.input-dark:focus {
+  outline: none;
+  background: rgba(255,255,255,0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.25);
+  color: white;
+}
+
+/* Imágenes */
+.img-personaje { width: 90px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5)); }
+
+/* Score */
+.score-box {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 1rem 1.5rem;
+  min-width: 100px;
+}
+.score-num {
+  font-size: 3rem;
+  font-weight: bold;
+  line-height: 1;
+  background: linear-gradient(135deg, #fff, var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.vs-text {
+  font-size: 2rem;
+  font-weight: bold;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 4px;
+}
+
+/* Opciones */
+.opcion-card {
+  cursor: pointer;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 1.5rem 1rem;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  color: white;
+  user-select: none;
+}
+.opcion-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.08);
+}
+.opcion-card.seleccionada {
+  background: rgba(124,58,237,0.2);
+  border-color: var(--accent);
+  box-shadow: 0 0 24px var(--glow-purple), inset 0 0 20px rgba(124,58,237,0.1);
+  transform: translateY(-6px) scale(1.02);
+}
+
+/* Iconos */
+.icono-inicio {
+  width: 130px; height: 130px;
+  filter: invert(1) drop-shadow(0 0 12px rgba(255,255,255,0.3));
+  transition: transform 0.3s, filter 0.3s;
+}
+.icono-inicio:hover {
+  transform: translateY(-8px) scale(1.1);
+  filter: invert(1) drop-shadow(0 0 20px var(--accent-2));
+}
+.icono-opcion {
+  width: 100px; height: 100px;
+  filter: invert(1) drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+  transition: filter 0.2s;
+}
+.opcion-card.seleccionada .icono-opcion {
+  filter: invert(1) drop-shadow(0 0 12px var(--accent-2));
+}
+.icono-resultado {
+  width: 110px; height: 110px;
+  filter: invert(1) drop-shadow(0 0 16px rgba(255,255,255,0.4));
+}
+
+/* Misc */
+.badge-jugador {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+}
+.mensaje-ronda {
+  font-size: 2.5rem;
+  background: linear-gradient(135deg, #fff 0%, var(--accent-2) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.divider {
+  width: 60px; height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: 2px;
+  margin: 0.5rem auto;
+}
+
+/* Toggle tema */
+.btn-tema {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  border-radius: 50px;
+  color: rgba(255,255,255,0.7);
+  font-family: 'Fuzzy Bubbles', cursive;
+  font-size: 0.85rem;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-tema:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PANTALLA JUGADA MOBILE-FIRST
+══════════════════════════════════════════════════════════════════════════ */
+.pantalla-jugada {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.jugada-inner {
+  min-height: 100dvh;
+}
+
+.titulo-jugada {
+  font-size: clamp(0.9rem, 4.5vw, 1.8rem) !important;
+}
+
+.img-personaje-sm {
+  width: 55px;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+}
+
+.score-num-sm {
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1;
+  background: linear-gradient(135deg, #fff, var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.vs-text-sm {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 3px;
+}
+
+/* Iconos opciones responsivos */
+.icono-opcion {
+  width: clamp(55px, 18vw, 100px);
+  height: clamp(55px, 18vw, 100px);
+  filter: invert(1) drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+  transition: filter 0.2s;
+}
+
+/* Resultado parcial */
+.resultado-col { max-width: 42%; }
+
+.icono-resultado-sm {
+  width: clamp(60px, 22vw, 90px);
+  height: clamp(60px, 22vw, 90px);
+  filter: invert(1) drop-shadow(0 0 10px rgba(255,255,255,0.3));
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TEMA RETRO 16-BIT
+══════════════════════════════════════════════════════════════════════════ */
+.retro {
+  --r-amarillo: #FFE000;
+  --r-cyan:     #00FFFF;
+  --r-magenta:  #FF00FF;
+  --r-verde:    #00FF41;
+  --r-rojo:     #FF3131;
+  --r-bg:       #000014;
+
+  background: var(--r-bg);
+  font-family: 'Press Start 2P', monospace !important;
+}
+
+.retro * {
+  font-family: 'Press Start 2P', monospace !important;
+  image-rendering: pixelated;
+}
+
+/* Fondo retro con grid */
+.retro .pantalla {
+  background:
+    linear-gradient(rgba(0,255,65,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,65,0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Título retro */
+.retro .titulo-gradiente {
+  background: linear-gradient(180deg, var(--r-amarillo) 0%, var(--r-magenta) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  font-size: clamp(0.8rem, 3vw, 1.5rem) !important;
+  line-height: 1.8 !important;
+  letter-spacing: 2px;
+}
+
+/* Card retro — borde pixelado */
+.retro .glass-card {
+  background: #000014;
+  backdrop-filter: none;
+  border-radius: 0;
+  border: none;
+  box-shadow:
+    0 0 0 3px var(--r-cyan),
+    6px 6px 0 0 var(--r-magenta);
+  padding: 1.5rem;
+}
+
+/* Botón retro */
+.retro .btn-glow {
+  background: var(--r-amarillo);
+  border-radius: 0;
+  color: #000;
+  font-size: 0.6rem !important;
+  letter-spacing: 1px;
+  padding: 0.75rem 1.5rem;
+  box-shadow: 4px 4px 0 0 var(--r-magenta);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+.retro .btn-glow:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 0 var(--r-magenta);
+  color: #000;
+}
+.retro .btn-glow:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 0 var(--r-magenta);
+}
+.retro .btn-glow:disabled { opacity: 0.35; transform: none; box-shadow: none; }
+
+/* Input retro */
+.retro .input-dark {
+  background: #000;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 0 0 2px var(--r-cyan), 3px 3px 0 0 var(--r-verde);
+  color: var(--r-verde);
+  font-size: 0.65rem !important;
+  padding: 0.75rem 1rem;
+}
+.retro .input-dark::placeholder { color: rgba(0,255,65,0.35); }
+.retro .input-dark:focus {
+  box-shadow: 0 0 0 2px var(--r-amarillo), 3px 3px 0 0 var(--r-verde);
+  background: #000;
+  color: var(--r-verde);
+}
+
+/* Score retro */
+.retro .score-box {
+  background: transparent;
+  border: none;
+  box-shadow: 0 0 0 2px var(--r-cyan);
+  border-radius: 0;
+  padding: 0.75rem 1.25rem;
+}
+.retro .score-num {
+  font-size: 2rem;
+  color: var(--r-amarillo);
+  -webkit-text-fill-color: var(--r-amarillo);
+  background: none;
+  text-shadow: 0 0 10px var(--r-amarillo), 0 0 20px rgba(255,224,0,0.5);
+}
+.retro .vs-text {
+  color: var(--r-magenta);
+  text-shadow: 0 0 10px var(--r-magenta);
+  font-size: 1.2rem;
+}
+
+/* Opciones retro */
+.retro .opcion-card {
+  background: #000014;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 0 0 2px rgba(0,255,255,0.4);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+.retro .opcion-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 0 var(--r-cyan), 0 0 0 2px var(--r-cyan);
+}
+.retro .opcion-card.seleccionada {
+  background: rgba(0,255,255,0.08);
+  box-shadow: 4px 4px 0 0 var(--r-magenta), 0 0 0 2px var(--r-magenta), 0 0 20px var(--r-magenta);
+  transform: translate(-2px,-2px);
+}
+.retro .opcion-card.seleccionada .icono-opcion {
+  filter: invert(1) drop-shadow(0 0 8px var(--r-magenta));
+}
+
+/* Iconos retro */
+.retro .icono-inicio {
+  filter: invert(1) drop-shadow(0 0 8px var(--r-cyan));
+  transition: filter 0.2s;
+}
+.retro .icono-inicio:hover {
+  filter: invert(1) drop-shadow(0 0 16px var(--r-amarillo));
+  transform: none;
+}
+.retro .icono-resultado {
+  filter: invert(1) drop-shadow(0 0 10px var(--r-cyan));
+}
+
+/* Personajes retro */
+.retro .img-personaje {
+  filter: drop-shadow(0 0 8px var(--r-verde)) brightness(0) invert(1);
+}
+
+/* Misc retro */
+.retro .badge-jugador {
+  color: var(--r-cyan);
+  font-size: 0.45rem !important;
+  text-shadow: 0 0 6px var(--r-cyan);
+}
+.retro .mensaje-ronda {
+  font-size: clamp(0.8rem, 3vw, 1.3rem) !important;
+  color: var(--r-amarillo);
+  -webkit-text-fill-color: var(--r-amarillo);
+  background: none;
+  text-shadow: 0 0 16px var(--r-amarillo), 0 0 30px rgba(255,224,0,0.4);
+}
+.retro .divider {
+  background: var(--r-magenta);
+  box-shadow: 0 0 8px var(--r-magenta);
+  height: 2px;
+  border-radius: 0;
+}
+.retro h1, .retro h2, .retro h3, .retro h5 { color: var(--r-cyan) !important; }
+.retro p, .retro div { color: rgba(0,255,255,0.8); }
+
+/* Toggle retro */
+.retro .btn-tema {
+  background: #000;
+  border: 2px solid var(--r-amarillo);
+  border-radius: 0;
+  color: var(--r-amarillo);
+  font-size: 0.5rem !important;
+  box-shadow: 2px 2px 0 var(--r-magenta);
+}
+.retro .btn-tema:hover { color: var(--r-amarillo); border-color: var(--r-magenta); }
+
+/* Score sm retro */
+.retro .score-num-sm {
+  color: var(--r-amarillo);
+  -webkit-text-fill-color: var(--r-amarillo);
+  background: none;
+  text-shadow: 0 0 8px var(--r-amarillo);
+}
+.retro .vs-text-sm {
+  color: var(--r-magenta);
+  text-shadow: 0 0 8px var(--r-magenta);
+}
+.retro .img-personaje-sm {
+  filter: brightness(0) invert(1) drop-shadow(0 0 6px var(--r-verde));
+}
+
+.retro .icono-resultado-sm {
+  filter: invert(1) drop-shadow(0 0 8px var(--r-cyan));
+}
+
+/* Blink animation para retro */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.retro .btn-tema { animation: none; }
