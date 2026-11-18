@@ -86,6 +86,8 @@ export class AppComponent {
   ];
 
   constructor() {
+    // La pista pesa ~3 MB: no se descarga hasta que suena por primera vez (no compite con la carga inicial).
+    this.audio.preload = 'none';
     this.audio.volume = 0.05;
     this.audio.loop = true;
 
