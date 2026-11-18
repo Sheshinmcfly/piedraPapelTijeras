@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://purple-plant-0c461dd0f.8.azurestaticapps.net/sitemap.xml

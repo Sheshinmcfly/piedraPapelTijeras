@@ -1,10 +1,35 @@
-<!-- Toggle de tema (siempre visible) -->
-<button class="btn-tema" (click)="toggleTema()">
-  {{ tema() === 'moderno' ? '👾 Retro' : '✨ Moderno' }}
-</button>
+<!-- Controles siempre visibles -->
+<div class="controles" [class.retro]="tema() === 'retro'">
+  @if (pantalla() === 'inicio' || pantalla() === 'cantidad' || pantalla() === 'resultFinal') {
+    <button type="button" class="btn-tema" (click)="verEstadisticas()">
+      <span aria-hidden="true">🏆</span> Récords
+    </button>
+  }
+  <button
+    type="button"
+    class="btn-tema"
+    [attr.aria-pressed]="musicaActiva()"
+    [attr.aria-label]="musicaActiva() ? 'Silenciar música' : 'Activar música'"
+    [title]="musicaActiva() ? 'Silenciar música' : 'Activar música'"
+    (click)="toggleMusica()"
+  >
+    <span aria-hidden="true">{{ musicaActiva() ? '🔊' : '🔇' }}</span>
+  </button>
+  <button
+    type="button"
+    class="btn-tema"
+    [attr.aria-label]="tema() === 'moderno' ? 'Cambiar al tema retro' : 'Cambiar al tema moderno'"
+    (click)="toggleTema()"
+  >
+    <span aria-hidden="true">{{ tema() === 'moderno' ? '👾' : '✨' }}</span> {{ tema() === 'moderno' ? 'Retro' : 'Moderno' }}
+  </button>
+</div>
+
+<!-- Anuncios para lectores de pantalla -->
+<p class="visually-hidden" aria-live="polite" aria-atomic="true">{{ anuncio() }}</p>
 
 <!-- Wrapper tema -->
-<div [class.retro]="tema() === 'retro'" [class.retro-scanlines]="tema() === 'retro'">
+<main [class.retro]="tema() === 'retro'" [class.retro-scanlines]="tema() === 'retro'">
 
   <!-- INICIO -->
   @if (pantalla() === 'inicio') {
@@ -12,22 +37,17 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-12 mb-3">
-            <h1 class="display-3 fw-bold titulo-gradiente">Piedra, papel o tijeras!</h1>
+            <h1 class="display-3 fw-bold titulo-gradiente">¡Piedra, papel o tijeras!</h1>
             <div class="divider mx-auto mt-2"></div>
           </div>
-          <div class="col-12 mb-5 d-flex justify-content-center gap-4 flex-wrap">
-            <img src="assets/img/piedra.svg"  alt="Piedra"  class="icono-inicio">
-            <img src="assets/img/papel.svg"   alt="Papel"   class="icono-inicio">
-            <img src="assets/img/tijeras.svg" alt="Tijeras" class="icono-inicio">
+          <div class="col-12 mb-5 d-flex justify-content-center gap-4 flex-wrap" aria-hidden="true">
+            <img src="assets/img/piedra.svg" alt="" class="icono-inicio" width="100" height="100">
+            <img src="assets/img/papel.svg" alt="" class="icono-inicio" width="100" height="100">
+            <img src="assets/img/tijeras.svg" alt="" class="icono-inicio" width="100" height="100">
           </div>
           <div class="col-12">
-            <button class="btn-glow" (click)="entrar()">
-              @if (tema() === 'moderno') {
-                <span>Entrar al juego</span>
-              }
-              @if (tema() === 'retro') {
-                <span>INSERT COIN</span>
-              }
+            <button type="button" class="btn-glow" (click)="entrar()">
+              {{ tema() === 'moderno' ? 'Entrar al juego' : 'INSERT COIN' }}
             </button>
           </div>
         </div>
@@ -39,37 +59,41 @@
   @if (pantalla() === 'cantidad') {
     <section animate.enter="pantalla-enter" animate.leave="pantalla-leave" class="pantalla">
       <div class="container">
-        <h1 class="fw-bold text-center titulo-gradiente mb-4">Piedra, papel o tijeras!</h1>
+        <h1 class="fw-bold text-center titulo-gradiente mb-4">¡Piedra, papel o tijeras!</h1>
         <div class="row justify-content-center">
           <div class="col-12 col-md-7 col-lg-5">
             <div class="glass-card">
               <div class="d-flex align-items-center gap-3 mb-4">
-                <img src="assets/img/robot.png" alt="Robot" style="width:70px;flex-shrink:0">
+                <img src="assets/img/robot.png" alt="La Máquina" width="70" height="70" class="robot-intro">
                 <div class="text-white">
-                  <h5 class="fw-bold mb-2">Hola humano!</h5>
-                  <p class="mb-0" style="opacity:0.8; font-size:0.85rem; line-height:1.8">
-                    Soy "La maquina", rey del piedra, papel o tijeras.<br>
-                    Nadie me puede ganar... Te gustaria intentarlo?<br>
-                    Ingresa el numero de partidas que deseas perder.
+                  <h2 class="h5 fw-bold mb-2">¡Hola, humano!</h2>
+                  <p class="mb-0 texto-intro">
+                    Soy «La Máquina», la reina de piedra, papel o tijeras.<br>
+                    Nadie me puede ganar… ¿Te gustaría intentarlo?<br>
+                    Ingresa el número de partidas que deseas perder.
                   </p>
                 </div>
               </div>
-              <div class="d-flex gap-2">
+              <form class="d-flex gap-2" (submit)="$event.preventDefault(); iniciarJuego()">
+                <label for="cantidad" class="visually-hidden">Número de partidas (1 a 100)</label>
                 <input
+                  id="cantidad"
+                  name="cantidad"
                   [(ngModel)]="cantidadInput"
                   class="input-dark flex-grow-1"
-                  type="number" min="1" max="100"
-                  placeholder="Numero de partidas"
-                  (keyup.enter)="iniciarJuego()">
-                <button class="btn-glow" (click)="iniciarJuego()">
-                  @if (tema() === 'moderno') {
-                    <span>Jugar</span>
-                  }
-                  @if (tema() === 'retro') {
-                    <span>START</span>
-                  }
-                </button>
-              </div>
+                  type="number"
+                  min="1"
+                  max="100"
+                  inputmode="numeric"
+                  placeholder="Número de partidas"
+                  [attr.aria-invalid]="errorCantidad() ? true : null"
+                  [attr.aria-describedby]="errorCantidad() ? 'error-cantidad' : null"
+                >
+                <button type="submit" class="btn-glow">{{ tema() === 'moderno' ? 'Jugar' : 'START' }}</button>
+              </form>
+              @if (errorCantidad()) {
+                <p id="error-cantidad" class="error-cantidad mt-2 mb-0" role="alert">{{ errorCantidad() }}</p>
+              }
             </div>
           </div>
         </div>
@@ -82,82 +106,76 @@
     <section animate.enter="pantalla-enter" animate.leave="pantalla-leave" class="pantalla-jugada text-white text-center">
       <div class="container-fluid px-3 d-flex flex-column jugada-inner">
         <div class="pt-3 pb-1">
-          <h2 class="fw-bold titulo-gradiente mb-0 titulo-jugada">Piedra, papel o tijeras!</h2>
-          <p class="mb-0" style="opacity:0.45; letter-spacing:2px; font-size:0.6rem">
-            RONDA {{ rondaActual() }} DE {{ cantidadTotal() }}
-          </p>
+          <h1 class="fw-bold titulo-gradiente mb-0 titulo-jugada">¡Piedra, papel o tijeras!</h1>
+          <p class="mb-0 ronda-info">RONDA {{ rondaActual() }} DE {{ cantidadTotal() }}</p>
         </div>
         <div class="d-flex justify-content-center align-items-center gap-4 py-2">
           <div class="text-center">
-            <div class="badge-jugador mb-1">Maquina</div>
-            <img src="assets/img/robot.png" alt="Robot" class="img-personaje-sm d-block mx-auto mb-1">
-            <div class="score-num-sm">{{ puntosRobot() }}</div>
+            <div class="badge-jugador mb-1">Máquina</div>
+            <img src="assets/img/robot.png" alt="" class="img-personaje-sm d-block mx-auto mb-1">
+            <div class="score-num-sm" [attr.aria-label]="'Máquina: ' + puntosRobot() + ' puntos'">{{ puntosRobot() }}</div>
           </div>
-          <div class="vs-text-sm">VS</div>
+          <div class="vs-text-sm" aria-hidden="true">VS</div>
           <div class="text-center">
-            <div class="badge-jugador mb-1">Tu</div>
-            <img src="assets/img/jugador.png" alt="Jugador" class="img-personaje-sm d-block mx-auto mb-1">
-            <div class="score-num-sm">{{ puntosJugador() }}</div>
+            <div class="badge-jugador mb-1">Tú</div>
+            <img src="assets/img/jugador.png" alt="" class="img-personaje-sm d-block mx-auto mb-1">
+            <div class="score-num-sm" [attr.aria-label]="'Tú: ' + puntosJugador() + ' puntos'">{{ puntosJugador() }}</div>
           </div>
         </div>
         <div class="flex-grow-1 d-flex align-items-center py-2">
-          <div class="row row-cols-3 g-2 w-100 mx-0">
-            @for (op of opciones; track op) {
+          <div class="row row-cols-3 g-2 w-100 mx-0" role="group" aria-label="Elige tu jugada (teclas 1, 2 y 3)">
+            @for (op of opciones; track op.valor) {
               <div class="col">
-                <div
-                  class="opcion-card h-100"
+                <button
+                  type="button"
+                  class="opcion-card h-100 w-100"
                   [class.seleccionada]="opcionSeleccionada() === op.valor"
-                  (click)="seleccionar(op.valor)">
-                  <img [src]="op.img" [alt]="op.label" class="icono-opcion d-block mx-auto mb-1">
-                  <div class="fw-bold" style="font-size:0.7rem">{{ op.label }}</div>
-                </div>
+                  [attr.aria-pressed]="opcionSeleccionada() === op.valor"
+                  (click)="seleccionar(op.valor)"
+                >
+                  <img [src]="op.img" alt="" class="icono-opcion d-block mx-auto mb-1">
+                  <span class="fw-bold opcion-label">{{ op.label }}</span>
+                  <kbd class="opcion-tecla" aria-hidden="true">{{ op.tecla }}</kbd>
+                </button>
               </div>
             }
           </div>
         </div>
         <div class="pb-4">
-          <button class="btn-glow w-100" [disabled]="opcionSeleccionada() === null" (click)="jugar()">
-            @if (tema() === 'moderno') {
-              <span>Piedra, papel o tijeras!</span>
-            }
-            @if (tema() === 'retro') {
-              <span>PLAY!</span>
-            }
+          <button type="button" class="btn-glow w-100" [disabled]="opcionSeleccionada() === null" (click)="jugar()">
+            {{ tema() === 'moderno' ? '¡Piedra, papel o tijeras!' : 'PLAY!' }}
           </button>
+          <p class="atajos mt-2 mb-0">Atajos: 1, 2 o 3 para elegir y Enter para jugar</p>
         </div>
       </div>
     </section>
   }
 
-  <!-- RESULT PARCIAL -->
+  <!-- RESULTADO DE LA RONDA -->
   @if (pantalla() === 'resultParcial') {
     <section animate.enter="pantalla-enter" animate.leave="pantalla-leave" class="pantalla text-white text-center">
       <div class="container">
-        <div class="mensaje-ronda fw-bold mb-1">{{ mensajeRonda() }}</div>
+        <h1 class="mensaje-ronda fw-bold mb-1">{{ mensajeRonda() }}</h1>
         <div class="divider mx-auto mb-4"></div>
-        <!-- Fila horizontal: robot | vs | jugador -->
         <div class="d-flex justify-content-center align-items-center gap-2">
-          <!-- Robot -->
           <div class="resultado-col text-center flex-fill">
-            <div class="badge-jugador mb-2">Maquina</div>
-            <img src="assets/img/robot.png" alt="Robot" class="img-personaje-sm d-block mx-auto mb-3">
+            <div class="badge-jugador mb-2">Máquina</div>
+            <img src="assets/img/robot.png" alt="" class="img-personaje-sm d-block mx-auto mb-3">
             @if (opcionRobot() !== null) {
               <div class="glass-card px-2 py-3">
-                <img [src]="opciones[opcionRobot()!].img" [alt]="opciones[opcionRobot()!].label" class="icono-resultado-sm d-block mx-auto">
-                <div class="fw-bold mt-2" style="font-size:0.65rem">{{ opciones[opcionRobot()!].label }}</div>
+                <img [src]="opciones[opcionRobot()!].img" alt="" class="icono-resultado-sm d-block mx-auto">
+                <div class="fw-bold mt-2 resultado-label">{{ opciones[opcionRobot()!].label }}</div>
               </div>
             }
           </div>
-          <!-- VS central -->
-          <div class="vs-text px-2">VS</div>
-          <!-- Jugador -->
+          <div class="vs-text px-2" aria-hidden="true">VS</div>
           <div class="resultado-col text-center flex-fill">
-            <div class="badge-jugador mb-2">Tu</div>
-            <img src="assets/img/jugador.png" alt="Jugador" class="img-personaje-sm d-block mx-auto mb-3">
+            <div class="badge-jugador mb-2">Tú</div>
+            <img src="assets/img/jugador.png" alt="" class="img-personaje-sm d-block mx-auto mb-3">
             @if (opcionSeleccionada() !== null) {
               <div class="glass-card px-2 py-3">
-                <img [src]="opciones[opcionSeleccionada()!].img" [alt]="opciones[opcionSeleccionada()!].label" class="icono-resultado-sm d-block mx-auto">
-                <div class="fw-bold mt-2" style="font-size:0.65rem">{{ opciones[opcionSeleccionada()!].label }}</div>
+                <img [src]="opciones[opcionSeleccionada()!].img" alt="" class="icono-resultado-sm d-block mx-auto">
+                <div class="fw-bold mt-2 resultado-label">{{ opciones[opcionSeleccionada()!].label }}</div>
               </div>
             }
           </div>
@@ -166,7 +184,7 @@
     </section>
   }
 
-  <!-- RESULT FINAL -->
+  <!-- RESULTADO FINAL -->
   @if (pantalla() === 'resultFinal') {
     <section animate.enter="pantalla-enter" animate.leave="pantalla-leave" class="pantalla text-white text-center">
       <div class="container">
@@ -174,31 +192,77 @@
         <div class="divider mx-auto mb-4"></div>
         <div class="row justify-content-center align-items-center mb-4 g-3">
           <div class="col-auto text-center">
-            <div class="badge-jugador mb-2">Maquina</div>
-            <img src="assets/img/robot.png" alt="Robot" class="img-personaje d-block mx-auto mb-2">
+            <div class="badge-jugador mb-2">Máquina</div>
+            <img src="assets/img/robot.png" alt="" class="img-personaje d-block mx-auto mb-2">
             <div class="score-box mx-auto"><div class="score-num">{{ puntosRobot() }}</div></div>
           </div>
-          <div class="col-auto"><div class="vs-text">VS</div></div>
+          <div class="col-auto"><div class="vs-text" aria-hidden="true">VS</div></div>
           <div class="col-auto text-center">
-            <div class="badge-jugador mb-2">Tu</div>
-            <img src="assets/img/jugador.png" alt="Jugador" class="img-personaje d-block mx-auto mb-2">
+            <div class="badge-jugador mb-2">Tú</div>
+            <img src="assets/img/jugador.png" alt="" class="img-personaje d-block mx-auto mb-2">
             <div class="score-box mx-auto"><div class="score-num">{{ puntosJugador() }}</div></div>
           </div>
         </div>
         <div class="glass-card d-inline-block px-4 py-3 mb-4">
-          <h3 class="fw-bold mb-0" style="font-size:clamp(0.7rem,2vw,1.1rem)" [innerHTML]="mensajeFinal()"></h3>
+          <h2 class="fw-bold mb-0 mensaje-final">{{ mensajeFinal() }}</h2>
         </div>
-        <br>
-          <button class="btn-glow mt-2" (click)="jugarDeNuevo()">
-            @if (tema() === 'moderno') {
-              <span>Jugar de nuevo!</span>
-            }
-            @if (tema() === 'retro') {
-              <span>PLAY AGAIN</span>
-            }
+        <div class="d-flex justify-content-center gap-2 flex-wrap mt-2">
+          <button type="button" class="btn-glow" (click)="jugarDeNuevo()">
+            {{ tema() === 'moderno' ? '¡Jugar de nuevo!' : 'PLAY AGAIN' }}
           </button>
         </div>
-      </section>
-    }
+      </div>
+    </section>
+  }
 
-  </div>
+  <!-- ESTADÍSTICAS -->
+  @if (pantalla() === 'estadisticas') {
+    <section animate.enter="pantalla-enter" animate.leave="pantalla-leave" class="pantalla text-white text-center">
+      <div class="container">
+        <h1 class="fw-bold titulo-gradiente mb-2">Tus récords</h1>
+        <div class="divider mx-auto mb-4"></div>
+        <div class="row justify-content-center">
+          <div class="col-12 col-md-9 col-lg-7">
+            @if (stats.partidasJugadas() === 0) {
+              <div class="glass-card mb-4">
+                <p class="mb-0">Todavía no terminas ninguna partida. ¡Desafía a «La Máquina» y aquí verás tus resultados!</p>
+              </div>
+            } @else {
+              <dl class="stats-grid mb-4">
+                <div class="glass-card stat"><dt>Partidas</dt><dd>{{ stats.partidasJugadas() }}</dd></div>
+                <div class="glass-card stat"><dt>Ganadas</dt><dd>{{ stats.datos().partidasGanadas }}</dd></div>
+                <div class="glass-card stat"><dt>Perdidas</dt><dd>{{ stats.datos().partidasPerdidas }}</dd></div>
+                <div class="glass-card stat"><dt>Empatadas</dt><dd>{{ stats.datos().partidasEmpatadas }}</dd></div>
+                <div class="glass-card stat"><dt>% de victorias</dt><dd>{{ stats.porcentajeVictorias() }}%</dd></div>
+                <div class="glass-card stat"><dt>Mejor racha</dt><dd>{{ stats.datos().mejorRacha }}</dd></div>
+                <div class="glass-card stat">
+                  <dt>Rondas G · P · E</dt>
+                  <dd class="stat-rondas">{{ stats.datos().rondasGanadas }} · {{ stats.datos().rondasPerdidas }} · {{ stats.datos().rondasEmpatadas }}</dd>
+                </div>
+                <div class="glass-card stat">
+                  <dt>Jugada favorita</dt>
+                  <dd>{{ stats.jugadaFavorita() === null ? '—' : opciones[stats.jugadaFavorita()!].label }}</dd>
+                </div>
+              </dl>
+            }
+          </div>
+        </div>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+          <button type="button" class="btn-glow" (click)="cerrarEstadisticas()">Volver</button>
+          @if (stats.partidasJugadas() > 0) {
+            @if (confirmandoReinicio()) {
+              <span class="confirmar-reinicio" role="alert">
+                ¿Borrar todos tus récords?
+                <button type="button" class="btn-tema btn-peligro" (click)="reiniciarRecords()">Sí, borrar</button>
+                <button type="button" class="btn-tema" (click)="confirmandoReinicio.set(false)">Cancelar</button>
+              </span>
+            } @else {
+              <button type="button" class="btn-tema" (click)="confirmandoReinicio.set(true)">Reiniciar récords</button>
+            }
+          }
+        </div>
+      </div>
+    </section>
+  }
+
+</main>
