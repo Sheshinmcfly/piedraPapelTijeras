@@ -1,30 +1,17 @@
-import { Component, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, signal, computed, ChangeDetectionStrategy } from '@angular/core';
+
 import { FormsModule } from '@angular/forms';
-import { trigger, transition, style, animate } from '@angular/animations';
 
 export type Pantalla = 'inicio' | 'cantidad' | 'jugada' | 'resultParcial' | 'resultFinal';
 export type Opcion   = 0 | 1 | 2; // 0=piedra, 1=papel, 2=tijeras
 export type Tema     = 'moderno' | 'retro';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
-  animations: [
-    trigger('pantalla', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(30px)' }),
-        animate('500ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
-      ]),
-      transition(':leave', [
-        style({ position: 'absolute', top: 0, left: 0, width: '100%' }),
-        animate('300ms ease-in', style({ opacity: 0, transform: 'translateY(-20px)' }))
-      ])
-    ])
-  ]
+    selector: 'app-root',
+    imports: [FormsModule],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css',
+    changeDetection: ChangeDetectionStrategy.Eager
 })
 export class AppComponent {
 

@@ -463,3 +463,33 @@
   50%       { opacity: 0; }
 }
 .retro .btn-tema { animation: none; }
+
+/* Transición entre pantallas (animaciones nativas de Angular). */
+.pantalla-enter {
+  animation: pantalla-entrar 500ms ease-out;
+}
+
+.pantalla-leave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  animation: pantalla-salir 300ms ease-in forwards;
+}
+
+@keyframes pantalla-entrar {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pantalla-salir {
+  to { opacity: 0; transform: translateY(-20px); }
+}
+
+/* Con movimiento reducido la animación es casi instantánea (no "none"): Angular espera su fin para retirar la pantalla que sale. */
+@media (prefers-reduced-motion: reduce) {
+  .pantalla-enter,
+  .pantalla-leave {
+    animation-duration: 0.01ms;
+  }
+}

@@ -1,6 +1,5 @@
-import { ApplicationConfig } from '@angular/core';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideAnimations()]
+  providers: [provideBrowserGlobalErrorListeners(), provideZonelessChangeDetection()],
 };
